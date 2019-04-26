@@ -1,4 +1,6 @@
 sudo: required
+
+#tells travis what language environment to setup (in our case we need go)
 language: go
 
 #define dependencies
