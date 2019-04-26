@@ -5,10 +5,11 @@ language: go
 services:
   - docker
 
+#create the docker image
 before_install:
   - docker build -t dorbsz/simple-microservice:latest .
 
-
+#push the image to docker hub
 after_success:
   # Login to docker cli
   - echo "$DOCKER_HUB_PWD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
