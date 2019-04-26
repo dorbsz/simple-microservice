@@ -6,11 +6,11 @@ services:
   - docker
 
 before_install:
-  - docker build -t simple-app/latest .
+  - docker build -t dorbsz/simple-microservice:latest .
 
 
 after_success:
   # Login to docker cli
   - echo "$DOCKER_HUB_PWD" | docker login -u "$DOCKER_HUB_USER" --password-stdin
   # Push the image to docker hub
-  - docker push simple-app:latest
+  - docker push dorbsz/simple-microservice:latest
