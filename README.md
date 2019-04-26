@@ -7,3 +7,6 @@ sudo docker run -d -p 80:80 simple-app:latest
 
 ### to view images
 sudo docker images
+
+### to view running containers
+docker container ls
