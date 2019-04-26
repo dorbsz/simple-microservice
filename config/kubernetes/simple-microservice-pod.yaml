@@ -1,0 +1,16 @@
+apiVersion: v1
+#defines the type of object we're creating
+kind: Pod
+#required metadata for pod object
+metadata:
+  name: simple-microservice
+  labels:
+    component: microservice
+
+spec:
+  #defines the image spec (taken from dockerhub)
+  containers:
+    - name: simple-microservice
+      image: dorbsz/simple-microservice
+      ports:
+        - containerPort: 80

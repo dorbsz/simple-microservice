@@ -1,0 +1,16 @@
+apiVersion: v1
+#type Service
+kind: Service
+metadata:
+  name: simple-microservice-port
+
+#Service has multiple subtypes, we're defining a NodePort which exposes
+#ports from a pod to other internal pods within the Node and to the outside world
+spec:
+  type: NodePort
+  ports:
+    - port: 81 #port used by other pods within the container to connect to this pod
+      targetPort: 80 # send any incoming traffic to this port within our pod defined by selector
+      nodePort: 30000 #port that gets exposed to the outside world (needs to be between 30000-32767)
+  selector:
+    component: microservice
