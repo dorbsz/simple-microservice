@@ -10,7 +10,8 @@ sudo docker run -d -p 80:80 simple-microservice:latest
 sudo docker images
 
 ### to view running containers
-docker container ls
+docker container ps
+
 
 ## Kubernetes
 ### To create the objects, we always start with the pod
