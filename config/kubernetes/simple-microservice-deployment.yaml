@@ -1,0 +1,80 @@
+
+#Deployment fo application
+
+#in order to update this file, the name in the metadata and the kind (pod) will always have to be the same as those are unique
+
+apiVersion: apps/v1
+#defines the type of object we're creating
+kind: Deployment
+#required metadata for pod object
+metadata:
+  name: simple-microservice
+
+spec:
+  #specify the number of replicas you need replicated
+  replicas: 1
+
+  #defines a handle for this service so that master knows how to get a handle of this object
+  #it specifies labels so it can identify each object it needs to deal with (in our case, component: microservice is
+  #refencing the same on line 25
+  selector:
+    matchLabels:
+      component: microservice
+
+  #defines the exact configuration that should be used for every pod
+  template:
+    metadata:
+      name: simple-microservice
+      labels:
+        component: microservice
+
+    spec:
+      #defines the image spec (taken from dockerhub)
+      containers:
+        - name: simple-microservice
+          image: dorbsz/simple-microservice
+          ports:
+            - containerPort: 81
+
+
+---
+#cluster-ip for this deployment
+
+#in order to update this file, the name of the file and the kind (pod) will always have to be the same as those are unique
+
+apiVersion: v1
+#defines the type of object we're creating
+kind: Service
+#required metadata for pod object
+metadata:
+  name: simple-microservice-cluster-ip-service
+
+spec:
+  #specify the type of service
+  type: ClusterIP
+
+  #Selects to which component this applies to (microservice tag on simple-microservice-deployment.yaml)
+  selector:
+    component: microservice
+
+  ports:
+    - port: 80  #port that is exposed from this service
+      targetPort: 80 #port that it will connect inside the container
+
+---
+#Add the nginx Ingress
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /?(.*)
+            backend:
+              serviceName: simple-microservice-cluster-ip-service
+              servicePort: 80
